@@ -22,21 +22,20 @@ import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.IOException;
 
 public class GifImageView extends ImageView {
-    static final String ANDROID_NS = "http://schemas.android.com/apk/res/android";
+
+    static final String ANDROID_NS="http://schemas.android.com/apk/res/android";
 
     public GifImageView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public GifImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        trySetGifDrawable(attrs, getResources());
+        this(context, attrs, 0);
     }
 
     public GifImageView(Context context, AttributeSet attrs, int defStyle) {
@@ -55,26 +54,26 @@ public class GifImageView extends ImageView {
     }
 
     void trySetGifDrawable(AttributeSet attrs, Resources res) {
-        int resId = attrs.getAttributeResourceValue(ANDROID_NS, "src", -1);
-        if (resId > 0 && "drawable".equals(res.getResourceTypeName(resId))) {
+        int resId=attrs.getAttributeResourceValue(ANDROID_NS, "src", -1);
+        if (resId>0&&"drawable".equals(res.getResourceTypeName(resId))) {
             setResource(true, resId, res);
         }
 
-        resId = attrs.getAttributeResourceValue(ANDROID_NS, "background", -1);
-        if (resId > 0 && "drawable".equals(res.getResourceTypeName(resId))) {
+        resId=attrs.getAttributeResourceValue(ANDROID_NS, "background", -1);
+        if (resId>0&&"drawable".equals(res.getResourceTypeName(resId))) {
             setResource(false, resId, res);
         }
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @SuppressWarnings("deprecation")
-        //new method not avalilable on older API levels
+    //new method not avalilable on older API levels
     public void setResource(boolean isSrc, int resId, Resources res) {
         try {
-            GifDrawable d = new GifDrawable(res, resId);
+            GifDrawable d=new GifDrawable(res, resId);
             if (isSrc) {
                 setImageDrawable(d);
-            } else if (Build.VERSION.SDK_INT >= 16) {
+            } else if (Build.VERSION.SDK_INT>=16) {
                 setBackground(d);
             } else {
                 setBackgroundDrawable(d);
@@ -138,4 +137,5 @@ public class GifImageView extends ImageView {
         onMeasure:1073742592 height:1073742862
         width:768 height:1038 getWidth():768 getMeasuredWidth:768 getMeasuredHeight:1038
         width:768 height:1038 widthSize:768 heightSize:1038*/
+
 }

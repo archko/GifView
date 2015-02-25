@@ -2,7 +2,9 @@ package org.fengwx;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,7 +21,7 @@ import java.io.IOException;
  */
 public class GifViewer extends Activity {
 
-    public static final String IMAGE_URL="ak_gif";
+    public static final String EXTRA_URL="ak_gif";
     GifImageView mGifImageView;
     protected ActionBar mActionBar;
 
@@ -48,26 +50,43 @@ public class GifViewer extends Activity {
             }
         });
 
-        if (null!=getIntent()) {
-            Uri uri=getIntent().getData();
-            if (null!=uri) {
-                try {
-                    System.out.println("uri:"+uri);
-                    GifDrawable drawable=new GifDrawable(uri.toString());
-                    mGifImageView.setImageDrawable(drawable);
-                } catch (IOException e) {
-                    e.printStackTrace();
+        Intent intent=getIntent();
+        String path=null;
+        //System.out.println("intent:"+getIntent());
+        if (null!=getIntent()&&null!=getIntent().getData()) {
+            System.out.println("data:"+getIntent().getData());
+            if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+                Uri uri=intent.getData();
+                System.out.println("URI to open is: "+uri);
+                if (uri.toString().startsWith("content://")) {
+                    try {
+                        Cursor cursor=getContentResolver().query(uri, new String[]{"_data"}, null, null, null);
+                        if (cursor.moveToFirst()) {
+                            String str=cursor.getString(0);
+                            if (str==null) {
+                                System.out.println("Couldn't parse data in intent");
+                            } else {
+                                uri=Uri.parse(str);
+                                path=Uri.decode(uri.getEncodedPath());
+                            }
+                        }
+                    } catch (Exception e2) {
+                        System.out.println("Exception in Transformer Prime file manager code: "+e2);
+                    }
+                } else if (uri.toString().startsWith("file")) {
+                    path=uri.toString().substring(7);
                 }
             } else {
-                String url=getIntent().getStringExtra(IMAGE_URL);
-                if (!TextUtils.isEmpty(url)) {
-                    try {
-                        GifDrawable drawable=new GifDrawable(uri.toString());
-                        mGifImageView.setImageDrawable(drawable);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                path=intent.getStringExtra(EXTRA_URL);
+            }
+        }
+
+        if (!TextUtils.isEmpty(path)) {
+            try {
+                GifDrawable drawable=new GifDrawable(path);
+                mGifImageView.setImageDrawable(drawable);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
