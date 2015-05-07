@@ -1,4 +1,4 @@
-package viewer;
+package pl.droidsonroids.gif.viewer;
 
 import android.app.ActionBar;
 import android.app.Activity;
