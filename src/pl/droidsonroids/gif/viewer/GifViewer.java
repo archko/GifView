@@ -1,4 +1,4 @@
-package org.fengwx;
+package viewer;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import org.fengwx.gif.GifDrawable;
-import org.fengwx.gif.GifImageView;
-import org.fengwx.gif.R;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
+import pl.droidsonroids.gif.R;
 
 import java.io.IOException;
 
@@ -81,6 +81,7 @@ public class GifViewer extends Activity {
             }
         }
 
+        System.out.println("path:"+path);
         if (!TextUtils.isEmpty(path)) {
             try {
                 GifDrawable drawable=new GifDrawable(path);

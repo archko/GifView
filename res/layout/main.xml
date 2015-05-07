@@ -8,13 +8,12 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:scrollbars="none" android:fillViewport="true"
         android:layout_centerInParent="true"
-        android:layout_width="match_parent" android:layout_height="match_parent">
+        android:layout_width="wrap_content" android:layout_height="wrap_content">
 
-        <org.fengwx.gif.GifImageView
-            android:id="@+id/gifview"
-            android:layout_centerInParent="true"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/gifview"/>
 
     </ScrollView>
 </RelativeLayout>
